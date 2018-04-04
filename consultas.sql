@@ -25,4 +25,11 @@ WHERE (tipo = 'ink-jet' or tipo = 'laser') and preco > 380
 ORDER BY preco DESC, tipo;
 
 
+-- D) Encontre os modelos dos produtos dos fabricantes cujo nome começa com uma letra que está
+--entre as 5 primeiras do alfabeto. O resultado deve aparecer ordenado em ordem crescente de nome
+--de fabricante.
 
+SELECT modelo
+FROM produto
+WHERE (fabricante LIKE 'A%' or fabricante LIKE 'B%' or fabricante LIKE 'C%' or fabricante LIKE 'D%' or fabricante LIKE 'E%')
+ORDER BY fabricante;
