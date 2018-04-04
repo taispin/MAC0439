@@ -34,9 +34,19 @@ FROM produto
 WHERE (fabricante LIKE 'A%' or fabricante LIKE 'B%' or fabricante LIKE 'C%' or fabricante LIKE 'D%' or fabricante LIKE 'E%')
 ORDER BY fabricante;
 
---e) Encontre os tipos de produtos vendidos pelos fabricantes que possuem 3 ou mais palavras em seu
+--E) Encontre os tipos de produtos vendidos pelos fabricantes que possuem 3 ou mais palavras em seu
 --nome, sendo que uma dessas palavras é HW.
 
 SELECT tipo
 FROM produto
 WHERE (fabricante LIKE 'HW % %' or fabricante LIKE '% HW %' or fabricante LIKE '% % HW');
+
+--F) Encontre os tipos de produtos vendidos pelos fabricantes que possuem exatamente 2 palavras em
+--seu nome.
+
+SELECT tipo
+FROM produto
+WHERE (fabricante LIKE '% %' and fabricante NOT LIKE '% % %');
+
+
+--G) Encontre os fabricantes e modelos das impressoras coloridas que não são do tipo ink-jet.
