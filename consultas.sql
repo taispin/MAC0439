@@ -58,3 +58,9 @@ WHERE (produto.tipo = 'impressora' and impressora.colorida = 'true' and impresso
 SELECT DISTINCT p1.fabricante
 FROM produto p1, produto p2
 WHERE (p1.tipo = 'impressora' and p2.tipo = 'pc' and p1.fabricante = p2.fabricante);
+
+-- I) Encontre as velocidades que aparecem em mais de um PC. 
+SELECT DISTINCT p.velocidade
+FROM pc p, pc q
+WHERE (p.modelo != q.modelo and p.velocidade = q.velocidade);
+
