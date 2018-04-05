@@ -22,7 +22,7 @@ WHERE  velocidade >= 1000 and velocidade <= 1500;
 SELECT *
 FROM impressora
 WHERE (tipo = 'ink-jet' or tipo = 'laser') and preco > 380
-ORDER BY preco DESC, tipo;
+ORDER BY tipo, preco DESC;
 
 
 -- D) Encontre os modelos dos produtos dos fabricantes cujo nome começa com uma letra que está
@@ -74,7 +74,16 @@ FROM laptop i, laptop j
 WHERE (i.velocidade = j.velocidade and ((i.preco >= j.preco and i.preco - j.preco < 500) or (i.preco < j.preco and j.preco - i.preco < 500)) and
  i.modelo != j.modelo and i.modelo < j.modelo);
 
- -- K) Liste o fabricante, o modelo e o preço de todos os produtos que aparecem no BD.
- 
-SELECT fabricante, modelo, preco
-FROM produto
+-- K) Liste o fabricante, o modelo e o preço de todos os produtos que aparecem no BD.
+
+(SELECT fabricante, produto.modelo, preco 
+	FROM produto, pc
+	WHERE produto.modelo = pc.modelo)
+ UNION 
+ (SELECT fabricante, produto.modelo, preco
+	FROM produto, impressora
+	WHERE produto.modelo = impressora.modelo)
+ UNION 
+ (SELECT fabricante, produto.modelo, preco 
+	FROM produto, laptop
+	WHERE produto.modelo = laptop.modelo);
