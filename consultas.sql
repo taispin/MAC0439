@@ -69,11 +69,12 @@ WHERE (p.modelo != q.modelo and p.velocidade = q.velocidade);
 --diferença entre os seus preços é menor que R$500,00. Mas atenção: se um par de modelos (i,j) for
 --listado, então o par (j,i) não deve ser listado.
 
--- INCOMPLETO
-
-SELECT DISTINCT i.modelo, j.modelo
+SELECT i.modelo, j.modelo
 FROM laptop i, laptop j
 WHERE (i.velocidade = j.velocidade and ((i.preco >= j.preco and i.preco - j.preco < 500) or (i.preco < j.preco and j.preco - i.preco < 500)) and
- i.modelo != j.modelo);
+ i.modelo != j.modelo and i.modelo < j.modelo);
 
  -- K) Liste o fabricante, o modelo e o preço de todos os produtos que aparecem no BD.
+ 
+SELECT fabricante, modelo, preco
+FROM produto
