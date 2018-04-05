@@ -53,3 +53,8 @@ WHERE (fabricante LIKE '% %' and fabricante NOT LIKE '% % %');
 SELECT produto.fabricante, produto.modelo
 FROM produto, impressora
 WHERE (produto.tipo = 'impressora' and impressora.colorida = 'true' and impressora.tipo != 'ink-jet' and produto.modelo = impressora.modelo);
+
+--H) Encontre os fabricantes que vendem tanto impressoras quanto PCs. 
+SELECT DISTINCT p1.fabricante
+FROM produto p1, produto p2
+WHERE (p1.tipo = 'impressora' and p2.tipo = 'pc' and p1.fabricante = p2.fabricante);
