@@ -50,3 +50,6 @@ WHERE (fabricante LIKE '% %' and fabricante NOT LIKE '% % %');
 
 
 --G) Encontre os fabricantes e modelos das impressoras coloridas que não são do tipo ink-jet.
+SELECT produto.fabricante, produto.modelo
+FROM produto, impressora
+WHERE (produto.tipo = 'impressora' and impressora.colorida = 'true' and impressora.tipo != 'ink-jet' and produto.modelo = impressora.modelo);
