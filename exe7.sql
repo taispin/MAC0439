@@ -53,3 +53,15 @@ WHERE laptop.velocidade = pc.velocidade;
 
 --select LaptopsIguaisPCs.*
 --from LaptopsIguaisPCs;
+
+/*c-- Uma visão InfoImpressoras que fornece o nome do fabricante, o modelo, o tipo e o preço das
+impressoras.*/
+
+CREATE VIEW InfoImpressoras AS
+SELECT fabricante,impressora.modelo,impressora.tipo,preco
+FROM produto, impressora
+WHERE produto.modelo = impressora.modelo;
+
+/* teste */
+--select InfoImpressoras.*
+--from InfoImpressoras;
