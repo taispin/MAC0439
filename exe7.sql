@@ -27,3 +27,15 @@ seu fabricante se disponível, e quaisquer outras informações sobre o produto 
 
 select *
 from produto left outer join (pc natural full outer join (impressora natural full outer join laptop)) AS todos on (todos.modelo = produto.modelo)
+
+/* Exercicio 7.2*/
+
+/* a- Uma visão ImpressorasColoridas, que fornece modelo, tipo e preço das impressoras coloridas.*/
+
+CREATE VIEW ImpressorasColoridas AS
+SELECT modelo, tipo, preco
+FROM impressora
+WHERE colorida = 'true';
+
+--select ImpressorasColoridas.*
+--from ImpressorasColoridas;
