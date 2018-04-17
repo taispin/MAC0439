@@ -39,3 +39,17 @@ WHERE colorida = 'true';
 
 --select ImpressorasColoridas.*
 --from ImpressorasColoridas;
+
+/* b- Uma visão LaptopsIguaisPCs, que fornece todos os atributos dos laptops que possuem
+velocidade igual a de um PC do BD.*/
+
+CREATE VIEW LaptopsIguaisPCs AS
+SELECT DISTINCT laptop.*
+FROM laptop, pc
+WHERE laptop.velocidade = pc.velocidade;
+
+/* teste */
+--DROP VIEW LaptopsIguaisPCs;
+
+--select LaptopsIguaisPCs.*
+--from LaptopsIguaisPCs;
