@@ -65,3 +65,16 @@ WHERE produto.modelo = impressora.modelo;
 /* teste */
 --select InfoImpressoras.*
 --from InfoImpressoras;
+
+/*d- Uma visão NaviosMaisNovos, que mostra o nome e o ano de lançamento dos navios lançados
+mais recentemente.*/
+/* Adotado como recentemente o ano de 1941*/
+CREATE VIEW NaviosMaisNovos AS
+SELECT nome, lancamento
+FROM navios
+WHERE lancamento >= 1941;
+
+/* teste */
+--select NaviosMaisNovos.*
+--from NaviosMaisNovos;
+
