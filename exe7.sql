@@ -78,3 +78,13 @@ WHERE lancamento >= 1941;
 --select NaviosMaisNovos.*
 --from NaviosMaisNovos;
 
+/*e- Uma visão NaviosAfundados, que mostra o nome, a classe e o ano de lançamento de todos os
+navios que afundaram em batalha.*/
+CREATE VIEW NaviosAfundados AS
+SELECT navios.*
+FROM navios, resultados
+WHERE navios.nome = resultados.navio and desfecho = 'afundado';
+
+/* teste */
+--select NaviosAfundados.*
+--from NaviosAfundados;
