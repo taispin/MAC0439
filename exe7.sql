@@ -1,4 +1,4 @@
-﻿﻿/* Nome: taís Pinheiro NUSp: 7580421*/
+﻿﻿﻿/* Nome: taís Pinheiro NUSp: 7580421*/
 /* MAC0439 - Laboratorio de Banco de Dados*/
 /* Exercicio 7 */
 
@@ -88,3 +88,19 @@ WHERE navios.nome = resultados.navio and desfecho = 'afundado';
 /* teste */
 --select NaviosAfundados.*
 --from NaviosAfundados;
+
+/*f- Uma visão NaviosPorClasse, que possui três atributos – classe, numNavios, ultLancamento –
+que mostra, para cada classe, o número de navios na classe e o ano do último lançamento de navio
+na classe. Na visão, as classes devem ser listadas por ordem decrescente de número de navios. Uma
+classe que não tiver navios não precisa aparecer na visão.*/
+
+CREATE VIEW NaviosPorClasse(classe, numNavios, ultLancamento) AS
+SELECT classe, COUNT(nome) AS numNavios, MAX(lancamento) AS ultLancamento 
+FROM navios 
+GROUP BY classe;
+
+--select NaviosPorClasse.*
+--from NaviosPorClasse;
+
+--DROP VIEW NaviosPorClasse;
+
