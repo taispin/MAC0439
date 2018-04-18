@@ -99,8 +99,18 @@ SELECT classe, COUNT(nome) AS numNavios, MAX(lancamento) AS ultLancamento
 FROM navios 
 GROUP BY classe;
 
---select NaviosPorClasse.*
---from NaviosPorClasse;
+select NaviosPorClasse.*
+from NaviosPorClasse;
 
 --DROP VIEW NaviosPorClasse;
+
+/* Exercicio 7.3*/
+
+/*a- Listar o país das classes de navios encouraçados que possuem mais do que 2 navios.*/
+select DISTINCT classes.pais
+from NaviosPorClasse, classes
+where classes.tipo = 'ne' and NaviosPorClasse.numNavios >= 2 and NaviosPorClasse.classe = classes.classe;
+
+/*b- Exibir o número médio de armas dos navios que afundaram em batalhas.*/
+
 
