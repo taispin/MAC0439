@@ -30,8 +30,19 @@ RETURN DISTINCT diretor.name;
 
 /*d) O Tom Hanks está procurando atores para atuar em um novo filme que ele vai dirigir.
 Recomende possíveis atores para esse novo filme dele.*/
-/*Recomendação: Atores que já atuaram em filmes que ele esteve ligado de alguma forma*/
 
-MATCH (recomendado:Person)-[r]->(filme:Movie)<-[s]-(diretor:Person)
+/*Recomendação: Atores que já atuaram em filmes que Tom Hanks esteve ligado de alguma forma*/
+
+MATCH (recomendado:Person)-[:ACTED_IN]->(filme:Movie)<-[s]-(diretor:Person)
 WHERE diretor.name="Tom Hanks"
+RETURN DISTINCT recomendado.name;
+
+/*e) Recomende atores com os quais o Jack Nicholson poderia trabalhar junto (mas que nunca
+trabalhou antes).*/
+
+/*Recomendação: Pessoas que já atuaram em algum filme e que nunca trabalham com o Jack*/
+MATCH (p:Person)-[r1]->(movie:Movie)<-[r2]-(jack:Person),(recomendado:Person)
+WHERE jack.name="Jack Nicholson"
+AND p.name <> recomendado.name
+AND (recomendado)-[:ACTED_IN]->(:Movie)
 RETURN DISTINCT recomendado.name;
