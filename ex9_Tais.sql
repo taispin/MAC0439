@@ -32,3 +32,33 @@ insert into produto (fabricante, modelo, tipo) values ('Z', 4444, 'impressora');
 insert into impressora (modelo, colorida, tipo, preco) values (4444, true,  'ink-jet',  260);
 select * from impressora;
 
+
+/*b- Na inserção ou alteração de um laptop, só permita que a operação seja realizada se o tamanho de
+HD informado para ele existir como um tamanho de HD na relação de PC (caso o tamanho de HD
+seja informado).*/
+
+CREATE OR REPLACE FUNCTION CorrigeLaptop()
+RETURNS TRIGGER AS $$
+BEGIN
+	IF(NEW.hd IN ( SELECT hd FROM pc))
+	THEN 
+	RETURN NEW;
+	ELSE
+	RETURN NULL;
+	END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER LaptopHD
+BEFORE INSERT OR UPDATE OF hd ON laptop
+FOR EACH ROW
+WHEN (NEW.hd IS NOT NULL)
+EXECUTE PROCEDURE CorrigeLaptop();
+
+/* teste */
+DROP TRIGGER Impressora250 ON impressora;
+DELETE FROM laptop WHERE modelo = 5555;
+insert into produto (fabricante, modelo, tipo) values ('Z', 5555, 'laptop');
+insert into laptop (modelo, velocidade, ram, hd, tela, preco) values (5555, 700,  64,  500, 12.1, 1448);
+select * from pc;
+select * from laptop;
