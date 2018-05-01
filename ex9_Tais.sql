@@ -56,9 +56,39 @@ WHEN (NEW.hd IS NOT NULL)
 EXECUTE PROCEDURE CorrigeLaptop();
 
 /* teste */
-DROP TRIGGER Impressora250 ON impressora;
 DELETE FROM laptop WHERE modelo = 5555;
 insert into produto (fabricante, modelo, tipo) values ('Z', 5555, 'laptop');
 insert into laptop (modelo, velocidade, ram, hd, tela, preco) values (5555, 700,  64,  500, 12.1, 1448);
 select * from pc;
 select * from laptop;
+
+
+/*c- Na inserção de um novo PC, caso ele não esteja cadastrado ainda na tabela de Produtos, inclua-o
+em Produto, usando 'H' como fabricante.*/
+
+CREATE OR REPLACE FUNCTION IncluiPCProduto()
+RETURNS TRIGGER AS $$
+BEGIN
+	IF(NEW.modelo IN ( SELECT modelo FROM produto))
+	THEN 
+	RETURN NEW;
+	ELSE
+	insert into produto (fabricante, modelo, tipo) values ('H', NEW.modelo, 'pc');
+	RETURN NEW;
+	END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER IncluiPC
+BEFORE INSERT ON pc
+FOR EACH ROW
+WHEN (NEW.modelo IS NOT NULL)
+EXECUTE PROCEDURE IncluiPCProduto();
+
+/* teste */
+DELETE FROM pc WHERE modelo = 6666;
+DELETE FROM produto WHERE modelo = 6666;
+insert into produto (fabricante, modelo, tipo) values ('Z',6666 , 'pc');
+insert into pc (modelo, velocidade, ram, hd, cd, preco) values (6666,  753, 256, 60, '2x', 2499);
+select * from pc;
+select * from produto;
