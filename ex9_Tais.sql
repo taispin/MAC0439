@@ -1,4 +1,4 @@
-﻿/* Nome: taís Pinheiro NUSP: 7580421*/
+﻿﻿/* Nome: taís Pinheiro NUSP: 7580421*/
 /* MAC0439 - Laboratorio de Banco de Dados*/
 /* Exercicio 9 */
 
@@ -92,3 +92,72 @@ insert into produto (fabricante, modelo, tipo) values ('Z',6666 , 'pc');
 insert into pc (modelo, velocidade, ram, hd, cd, preco) values (6666,  753, 256, 60, '2x', 2499);
 select * from pc;
 select * from produto;
+
+/*d- Garanta, em todas as circunstâncias que podem causar uma violação, que cada fabricante venda
+no máximo 7 equipamentos.*/
+CREATE OR REPLACE FUNCTION VerificaFabricante7()
+RETURNS TRIGGER AS $$
+BEGIN
+	IF((SELECT COUNT(fabricante) FROM produto WHERE fabricante = NEW.fabricante) >= 7)
+	THEN 
+	RETURN NULL;
+	ELSE
+	RETURN NEW;
+	END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER VerificaFabricante
+BEFORE INSERT OR UPDATE OF fabricante ON produto
+FOR EACH ROW
+WHEN (NEW.modelo IS NOT NULL)
+EXECUTE PROCEDURE VerificaFabricante7();
+
+/* teste */
+SELECT COUNT(fabricante) FROM produto WHERE fabricante = 'A';
+DROP TRIGGER VerificaFabricante ON produto;
+insert into produto (fabricante, modelo, tipo) values ('A', 9999, 'laptop');
+select * from produto;
+
+/*e- Na remoção de qualquer equipamento das relações PC, laptop ou impressora, remova o registro
+correspondente na relação Produto. */
+
+CREATE OR REPLACE FUNCTION Remove()
+RETURNS TRIGGER AS $$
+BEGIN
+	DELETE FROM produto WHERE modelo = OLD.modelo;
+	RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER RemocaoImpressora
+AFTER DELETE ON impressora
+FOR EACH ROW
+WHEN (OLD.modelo IS NOT NULL)
+EXECUTE PROCEDURE Remove();
+
+CREATE TRIGGER RemocaoPC
+AFTER DELETE ON pc
+FOR EACH ROW
+WHEN (OLD.modelo IS NOT NULL)
+EXECUTE PROCEDURE Remove();
+
+CREATE TRIGGER RemocaoLaptop
+AFTER DELETE ON laptop
+FOR EACH ROW
+WHEN (OLD.modelo IS NOT NULL)
+EXECUTE PROCEDURE Remove();
+
+/* teste */
+SELECT COUNT(fabricante) FROM produto WHERE fabricante = 'A';
+DROP TRIGGER RemocaoLaptop ON laptop;
+DROP TRIGGER RemocaoPC ON pc;
+DROP TRIGGER RemocaoImpressora ON impressora;
+insert into produto (fabricante, modelo, tipo) values ('X', 99990, 'pc');
+insert into pc (modelo, velocidade, ram, hd, cd, preco) values (99990,  753, 256, 60, '2x', 2499);
+insert into impressora (modelo, colorida, tipo, preco) values (3007, false,   'laser',  350);
+insert into laptop (modelo, velocidade, ram, hd, tela, preco) values (9999, 366,  64, 10, 12.1, 1499);
+DELETE FROM pc WHERE modelo = 99990;
+select * from produto;
+select * from laptop;
+select * from pc;
