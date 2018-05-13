@@ -1,4 +1,4 @@
-﻿﻿/* Nome: taís Pinheiro NUSp: 7580421*/
+﻿﻿﻿/* Nome: taís Pinheiro NUSp: 7580421*/
 /* MAC0439 - Laboratorio de Banco de Dados*/
 /* Exercicio 11 */
 
@@ -69,11 +69,11 @@ BEGIN
 	(SELECT * FROM batalhas)
 		LOOP
 			IF (min = -1) THEN
-				min = abs(abs(d) - abs(linha.data));
+				min = abs(d - linha.data);
 				result = linha.nome;
 
 			ELSE
-				ver = abs(abs(d) - abs(linha.data));
+				ver = abs(d - linha.data);
 				IF (ver < min) THEN
 					min = ver;
 					result = linha.nome;
@@ -86,6 +86,4 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- teste
-
-
-SELECT encontra_batalha('oiCaliforniaoi');
+SELECT encontra_batalha('1941-4-24');
