@@ -1,4 +1,4 @@
-﻿﻿﻿/* Nome: taís Pinheiro NUSp: 7580421*/
+﻿﻿﻿﻿/* Nome: taís Pinheiro NUSp: 7580421*/
 /* MAC0439 - Laboratorio de Banco de Dados*/
 /* Exercicio 11 */
 
@@ -27,11 +27,11 @@ BEGIN
 	FROM navios full outer join resultados on (nome = navio))
 		LOOP
 			IF linha.nome <> ' ' THEN
-				IF (str LIKE (padrao || linha.nome || padrao)) THEN
+				IF (linha.nome LIKE (padrao || str || padrao)) THEN
 					result = result || linha.nome;
 				END IF;
 			ELSE
-				IF (str LIKE (padrao || linha.navio || padrao)) THEN
+				IF (linha.navio LIKE (padrao || str || padrao)) THEN
 					result = result || linha.navio;
 				END IF;
 			END IF;
@@ -40,7 +40,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-SELECT encontra_navios('oiCaliforniaoi');
+SELECT encontra_navios('California');
 
 SELECT * 
 FROM navios full outer join resultados on (nome = navio);
@@ -87,3 +87,10 @@ $$ LANGUAGE plpgsql;
 
 -- teste
 SELECT encontra_batalha('1941-4-24');
+
+/* c- Faça um procedimento que receba um nome de uma batalha como parâmetro de entrada e, para
+cada navio que participou da batalha e que não está cadastrado na tabela Navios, insira o navio em
+Navios, usando como ano de lançamento do navio o ano em que a batalha ocorreu. Insira como
+classe para o “novo” navio uma classe com o mesmo nome do navio e com demais atributos iguais
+ao da classe ‘Revenge’. Dica: a função extract(year from d) do PostgreSQL devolve o ano de uma
+data.*/
