@@ -1,4 +1,4 @@
-﻿﻿﻿﻿/* Nome: taís Pinheiro NUSp: 7580421*/
+﻿﻿﻿﻿﻿/* Nome: taís Pinheiro NUSp: 7580421*/
 /* MAC0439 - Laboratorio de Banco de Dados*/
 /* Exercicio 11 */
 
@@ -94,3 +94,38 @@ Navios, usando como ano de lançamento do navio o ano em que a batalha ocorreu. 
 classe para o “novo” navio uma classe com o mesmo nome do navio e com demais atributos iguais
 ao da classe ‘Revenge’. Dica: a função extract(year from d) do PostgreSQL devolve o ano de uma
 data.*/
+
+CREATE OR REPLACE FUNCTION inclui_navio(nomeBatalha TEXT) RETURNS VOID AS $$
+
+-- cursor
+DECLARE
+linha resultados%ROWTYPE;
+aux classes%ROWTYPE;
+ano INT;
+
+BEGIN
+	ano = extract(year from (SELECT data FROM batalhas WHERE nome = nomeBatalha));
+	SELECT * INTO aux FROM classes WHERE classe = 'Revenge';
+
+	FOR linha IN
+	(SELECT * FROM resultados WHERE batalha = nomeBatalha)
+		LOOP
+			IF NOT EXISTS (SELECT * FROM navios WHERE nome = linha.navio) THEN
+				INSERT INTO navios VALUES (linha.navio,linha.navio,ano);
+				INSERT INTO classes VALUES (linha.navio, aux.tipo, aux.pais, aux.numarmas, aux.calibre, aux.deslocamento);
+				
+			END IF;
+		END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+--teste
+
+SELECT inclui_navio('Y1');
+SELECT * FROM navios;
+SELECT * FROM classes;
+SELECT * FROM resultados where batalha = 'North Atlantic';
+INSERT INTO resultados VALUES ('X1','Y1','ok');
+INSERT INTO resultados VALUES ('X1','North Atlantic','ok');
+
+
