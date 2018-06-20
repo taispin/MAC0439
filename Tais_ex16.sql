@@ -42,12 +42,21 @@ select * from NomesDosEmpregados;
 select * from InfosDosDepts;
 
 -- Exercício 02
--- Quais privilégios devem ser dados a um usuário que precisa saber apenas os salários médios para os departamentos 
--- “Pré-produção” e “Informática”? Escreva o comando correspondente.
+/* Quais privilégios devem ser dados a um usuário que precisa saber apenas os salários médios para os departamentos 
+“Pré-produção” e “Informática”? Escreva o comando correspondente.*/
 
+-- Primeiro criamos uma nova view com as restrições necessárias
+CREATE VIEW InfosDosDepts_preProducao_informatica AS
+SELECT * 
+FROM InfosDosDepts
+WHERE dept = 'Pré-produção' OR dept = 'Informática';
+
+select * from InfosDosDepts_preProducao_informatica;
+
+-- Com a nova visão criada, concedemos os privilégios
 GRANT USAGE ON SCHEMA mac439_exercicio16 TO userglobal1;
 GRANT SELECT
-ON lim as (SELECT * FROM InfosDosDepts WHERE dept = 'Pré-produção' OR dept = 'Informática')
+ON InfosDosDepts_preProducao_informatica
 TO userglobal1;
 
 
